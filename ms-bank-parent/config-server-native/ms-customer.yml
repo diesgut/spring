@@ -1,0 +1,67 @@
+activeProfileName: default
+server:
+    port: 8083 #random port
+    servlet:
+        context-path: /customer-service
+spring:
+    application:
+        name: ms-customer
+    datasource:
+        url: jdbc:sqlite:customer-database.db
+        driver-class-name: org.sqlite.JDBC
+        username: admin
+        password: admin
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: update
+            database-platform: org.hibernate.community.dialect.SQLiteDialect
+
+info:
+    app:
+        name: MS CUSTOMER
+        description: API para gestión de clientes
+        version: v1
+
+# http://localhost:{port}/swagger-ui/index.html
+springdoc:
+    api-docs:
+        # Información que se muestra en la cabecera de la página
+        title: 'MS CUSTOMER'
+    swagger-ui:
+        title: "Documentación - API de Clientes"
+        supported-submit-methods: []
+    # swagger-ui custom path
+    #swagger-ui.path: /swagger-ui.html
+    # Disabling the swagger-ui
+    #swagger-ui.enabled: true
+
+    #packagesToScan: com.paymentchain.billing.entities,com.paymentchain.billing.controller
+    #pathsToWatch: /v1, /billing/**
+
+eureka:
+    client:
+        serviceUrl:
+            #podriamos tener multiples instancias de eureka, o quizas un proveedor distinto
+            defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+        #indicates that this ms is a eureka client
+        register-with-eureka: true
+        #for notice to eureka if this ms is available, needs actuator
+        healthcheck:
+            enabled: true
+        fetch-registry: true
+    instance:
+        prefer-ip-address: true
+
+#expose all actuator endpoints
+#by default actuator expose /health and /info only
+# /ms-customer/actuator/health , /ms-customer/actuator/info
+management:
+    endpoints:
+        web:
+            exposure:
+                include: '*'
+    tracing:
+        sampling:
+            probability: 1.0 # 100% of requests will be traced
+        enabled: true #by default is true?

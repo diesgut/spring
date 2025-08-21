@@ -1,0 +1,47 @@
+server:
+    port: 8050
+    servlet:
+        context-path: /ms-security
+spring:
+    application:
+        name: ms-springboot-security
+    profiles:
+        active: token-auth # or api-key-auth
+    datasource:
+        url: jdbc:sqlite:security-demo.db
+        driver-class-name: org.sqlite.JDBC
+        username: admin
+        password: admin
+    jpa:
+        show-sql: true
+        hibernate:
+            ddl-auto: 'create-drop'
+            database-platform: org.hibernate.community.dialect.SQLiteDialect
+    #for basic authentication, add in header authorization: Basic "convertBase64(diesgut:password)
+    sql:
+        init:
+            mode: NEVER
+    security:
+       # api-header-name: authorization
+        user:
+            name: diesgut
+            password: password
+            roles: ADMIN
+    #for api key authentication
+        api-header-name: X-API-KEY
+        secret-key: MI_API_KEY_SUPER_SECRETA_12345
+
+jwt:
+    # NUNCA escribas el secreto aquí en un proyecto real.
+    # En su lugar, usa una variable de entorno.
+    secret: ${JWT_SECRET_KEY:fallback-secret-para-desarrollo-local}
+
+    # El valor está en milisegundos. Elige una estrategia.
+
+    # --- Estrategia de Expiración Larga (Simple) ---
+    # 1 hora = 3600000
+    # 8 horas = 28800000
+    # --- Estrategia de Expiración Corta (Más Segura) ---
+    # 15 minutos = 900000
+    # expiration: 900000
+    expiration: 3600000

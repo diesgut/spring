@@ -1,0 +1,37 @@
+server:
+  port: 8761 #this port is usually used for eureka,, to see http://localhost:8761/
+spring:
+  application:
+    name: eureka-server
+  cloud:
+    config:
+      enabled: false
+eureka:
+  client:
+    # Estas dos propiedades son para un servidor Eureka que tambien es un cliente.
+    # Deshabilita el comportamiento de que el servidor se registre a si mismo.
+    register-with-eureka: false
+    #Default behavior:
+
+    #The client automatically asks the Eureka server for a list of registered services upon startup (true by default).
+    #If the server is unavailable, the application won't start and an error occurs.
+    #Setting to false:
+
+    #Disables the client from contacting the server at startup, allowing the application to start even if the server is down.
+    #However, the application cannot discover new services registered on Eureka later.
+    #This is only recommended for local testing environments where the Eureka server might be unavailable.
+    # Evita que el servidor intente obtener una copia del registro de otro par.
+    fetch-registry: false
+  server:
+    # Umbral para activar el modo de auto-preservaci�n.
+    # Si el % de renovaciones cae por debajo de este valor (85%), el servidor deja de expirar instancias.
+    renewal-percent-threshold: 0.85 #si el 85$ de las instancias de un determinado ms estan bien, entonces el ms esta correcto
+    # Activa (true) o desactiva (false) el modo de auto-preservaci�n.
+    # Es una red de seguridad CR�TICA en producci�n.
+    enable-self-preservation: true
+  instance:
+    # Frecuencia (en segundos) con la que esta instancia enviar� su "heartbeat" al servidor.
+    # El valor de 10 segundos es m�s agresivo que el default (30s), �til para tests.
+    lease-renewal-interval-in-seconds: 10 #cada cuanto tiempo le pregunta los ms si estan funcionando
+
+  #spring.cloud.config.enabled=false

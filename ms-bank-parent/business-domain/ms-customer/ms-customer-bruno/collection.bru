@@ -1,0 +1,11 @@
+auth {
+  mode: bearer
+}
+
+auth:bearer {
+  token: {{TOKEN_BANK_API}}
+}
+
+vars:pre-request {
+  MS-CUSTOMER-PORT: 8081
+}

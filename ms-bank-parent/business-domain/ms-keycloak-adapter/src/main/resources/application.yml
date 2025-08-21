@@ -1,0 +1,46 @@
+server:
+  port: 8084
+spring:
+  application:
+    name: ms-keycloak-adapter
+  cloud:
+    config:
+      enabled: false
+
+eureka:
+  client:
+    serviceUrl:
+      #podriamos tener multiples instancias de eureka, o quizas un proveedor distinto
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+    #indicates that this ms is a eureka client
+    register-with-eureka: true
+    #for notice to eureka if this ms is available, needs actuator
+    healthcheck:
+      enabled: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true
+
+keycloak:
+  base-uri: ${KEYCLOACK_SERVER:http://localhost:9090/realms/}
+  authorization-uri: ${keycloak.base-uri}AppBank/protocol/openid-connect/auth
+  user-info-uri: ${keycloak.base-uri}AppBank/protocol/openid-connect/userinfo
+  token-uri: ${keycloak.base-uri}AppBank/protocol/openid-connect/token
+  logout: ${keycloak.base-uri}AppBank/protocol/openid-connect/logout
+  jwk-set-uri: ${keycloak.base-uri}AppBank/protocol/openid-connect/certs
+  certs-id: ${KEYCLOACK_REAL_ID:n0iXFWQVcTzHN9TQ4Nnnmb9UdpozLUZI4wuqAvvLlOQ}
+  client-id: front-angular
+  client-secret: WRGxdqdooCJcHG8zgTtszIGBmT9aBRZG
+  scope: profile
+  authorization-grant-type: password
+  authorization-grant-type-refresh: refresh_token
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+logging:
+  level:
+    root: INFO

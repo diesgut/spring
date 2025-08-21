@@ -1,0 +1,24 @@
+meta {
+  name: update
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:{{MS-CUSTOMER-PORT}}/customer-service/api/v1/persons/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 21f243ac-e264-4c8e-a5e2-bd3572c629e7
+}
+
+body:json {
+  {
+    "firstName": "diego 2",
+    "lastName": "gutierrez 2",
+    "documentType": "DNI",
+    "documentNumber": "45478421 2"
+  }
+}

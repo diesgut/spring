@@ -1,0 +1,15 @@
+meta {
+  name: person
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:{{MS-CUSTOMER-PORT}}/customer-service/api/v1/persons/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 21f243ac-e264-4c8e-a5e2-bd3572c629e7
+}

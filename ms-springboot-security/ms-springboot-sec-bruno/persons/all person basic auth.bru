@@ -1,0 +1,22 @@
+meta {
+  name: all person basic auth
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:8050/ms-security/persons
+  body: none
+  auth: none
+}
+
+headers {
+  authorization: Basic ZGllc2d1dDpwYXNzd29yZA==
+}
+
+body:json {
+  {
+    "firstName": "firstName_d33de9a8ea62",
+    "lastName": "lastName_095e2e5fc3fc"
+  }
+}

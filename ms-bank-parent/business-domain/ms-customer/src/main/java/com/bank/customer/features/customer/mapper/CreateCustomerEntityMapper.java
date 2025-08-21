@@ -1,0 +1,20 @@
+package com.bank.customer.features.customer.mapper;
+
+import com.bank.customer.features.customer.CustomerEntity;
+import com.bank.customer.features.customer.dto.CreateCustomerDto;
+import org.mapstruct.*;
+
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = MappingConstants.ComponentModel.SPRING)
+public interface CreateCustomerEntityMapper {
+    @Mapping(source = "person.transactionUuid", target = "personEntity.transaction_uuid")
+    @Mapping(source = "company", target = "company")
+    @Mapping(source = "phoneNumber", target = "phone_number")
+    @Mapping(source = "status", target = "status")
+    CustomerEntity toEntity(CreateCustomerDto dto);
+
+    @Mapping(source = "personEntity.transaction_uuid", target = "person.transactionUuid")
+    @Mapping(source = "company", target = "company")
+    @Mapping(source = "phone_number", target = "phoneNumber")
+    @Mapping(source = "status", target = "status")
+    CreateCustomerDto toDto(CustomerEntity entity);
+}

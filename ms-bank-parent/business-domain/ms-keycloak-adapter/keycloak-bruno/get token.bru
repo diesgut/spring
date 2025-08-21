@@ -1,0 +1,20 @@
+meta {
+  name: get token
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:9090/realms/AppBank/protocol/openid-connect/token
+  body: formUrlEncoded
+  auth: inherit
+}
+
+body:form-urlencoded {
+  client_id: front-angular
+  grant_type: password
+  username: diesgut
+  password: diesgut
+  scope: profile
+  client_secret: WRGxdqdooCJcHG8zgTtszIGBmT9aBRZG
+}

@@ -1,0 +1,22 @@
+meta {
+  name: all person api key auth
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:8050/ms-security/persons
+  body: none
+  auth: none
+}
+
+headers {
+  X-API-KEY: MI_API_KEY_SUPER_SECRETA_12345
+}
+
+body:json {
+  {
+    "firstName": "firstName_d33de9a8ea62",
+    "lastName": "lastName_095e2e5fc3fc"
+  }
+}

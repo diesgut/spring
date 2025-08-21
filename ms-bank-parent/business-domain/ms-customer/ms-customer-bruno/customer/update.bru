@@ -1,0 +1,23 @@
+meta {
+  name: update
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:{{MS-CUSTOMER-PORT}}/customer-service/api/v1/customers/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: a043a797-b44e-4f31-8481-038c7d45f6ba
+}
+
+body:json {
+  {
+      "company": "umbrella corp 22",
+      "email": "email@email.com 2",
+      "phoneNumber": "993444462"
+  }
+}

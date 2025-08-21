@@ -1,0 +1,53 @@
+server:
+  port: 8080
+
+logging:
+  level:
+    com.bank.gateway: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty.http.client: DEBUG
+
+spring:
+  application:
+    name: spring-gateway
+  cloud:
+    config:
+      enabled: false
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: ms-customer
+              uri: lb://ms-customer
+              predicates:
+                - Path=/customer-service/**
+              filters:
+                - name: AuthenticationFilter
+                  args:
+                    validationUri: "http://MS-KEYCLOAK-ADAPTER/roles"
+                    requiredRole: "bank_api"
+                    timeoutSeconds: 8
+                    order: 1
+            - id: ms-bank-account
+              uri: lb://ms-bank-account
+              predicates:
+                - Path=/bank-account-service/**
+              filters:
+                - name: AuthenticationFilter
+                  args:
+                    validationUri: "http://MS-KEYCLOAK-ADAPTER/roles"
+                    requiredRole: "bank_api"
+                    timeoutSeconds: 8
+                    order: 1
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_SERVER:http://localhost:8761/eureka}
+    register-with-eureka: true
+    #for notice to eureka if this ms is available, needs actuator
+    healthcheck:
+      enabled: true
+    fetch-registry: true
+  instance:
+    prefer-ip-address: true

@@ -1,0 +1,29 @@
+# application.yml del Config Server
+server:
+    port: 8888
+spring:
+  application:
+      name: config-server-spring-cloud
+  profiles:
+    active: native # Activa el perfil para usar el sistema de archivos
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: file:///C:/Users/diesgut/Documents/MyProjects/JAVA/ms-bank-parent/config-server-native
+  security:
+    user:
+      name: admin
+      password: admin
+
+eureka:
+  client:
+    enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+# to check, open http://localhost:8888/config-client-local/server

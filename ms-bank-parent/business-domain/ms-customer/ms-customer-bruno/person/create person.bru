@@ -1,0 +1,20 @@
+meta {
+  name: create person
+  type: http
+  seq: 3
+}
+
+post {
+  url: http://localhost:{{MS-CUSTOMER-PORT}}/customer-service/api/v1/persons
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "firstName": "diego",
+    "lastName": "gutierrez",
+    "documentType": "DNI",
+    "documentNumber": "45478421"
+  }
+}

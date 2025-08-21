@@ -1,0 +1,24 @@
+meta {
+  name: update bank-account
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:{{MS-BANK-ACCOUNT-PORT}}/bank-account-service/api/v1/bank-accounts/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 37fd8c29-fab7-4efb-8acd-5888d4d83a58
+}
+
+body:json {
+  {
+    "firstName": "diego 2",
+    "lastName": "gutierrez 2",
+    "documentType": "DNI",
+    "documentNumber": "45478421 2"
+  }
+}

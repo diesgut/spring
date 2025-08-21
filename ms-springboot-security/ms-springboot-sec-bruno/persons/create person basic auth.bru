@@ -1,0 +1,18 @@
+meta {
+  name: create person basic auth
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:8050/ms-security/persons
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "firstName": "firstName_d33de9a8ea62",
+    "lastName": "lastName_095e2e5fc3fc"
+  }
+}

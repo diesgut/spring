@@ -1,0 +1,15 @@
+meta {
+  name: get roles
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:8084/roles
+  body: formUrlEncoded
+  auth: none
+}
+
+headers {
+  Authorization: Bearer {{TOKEN_BANK_API}}
+}

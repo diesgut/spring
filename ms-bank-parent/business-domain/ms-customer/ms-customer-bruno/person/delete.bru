@@ -1,0 +1,15 @@
+meta {
+  name: delete
+  type: http
+  seq: 5
+}
+
+delete {
+  url: http://localhost:{{MS-CUSTOMER-PORT}}/customer-service/api/v1/persons/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 129ac28f-59c8-4b21-a79a-67835fea1e60
+}

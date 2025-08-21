@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: ms-customer
+  profiles:
+    active: default
+  config:
+    # Habilita la importación de configuración desde el Config Server.
+    import: "configserver:"
+  cloud:
+    config:
+      # La URI donde se encuentra tu Config Server.
+      uri: http://localhost:8888
+
+

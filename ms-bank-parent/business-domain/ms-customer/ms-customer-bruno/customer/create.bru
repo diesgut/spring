@@ -1,0 +1,27 @@
+meta {
+  name: create
+  type: http
+  seq: 4
+}
+
+post {
+  url: http://localhost:{{MS-CUSTOMER-PORT}}/customer-service/api/v1/customers
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "person": {
+      "transactionUuid": "{{PERSON_UUID}}"
+    },
+    "company": "umbrella corp",
+    "email": "email@email.com",
+    "phoneNumber": "993444462",
+    "status": "ACTIVE"
+  }
+}
+
+vars:pre-request {
+  PERSON_UUID: 21f243ac-e264-4c8e-a5e2-bd3572c629e7
+}

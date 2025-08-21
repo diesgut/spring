@@ -1,0 +1,41 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0.1
+    container_name: keycloak
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+
+      KC_DB: dev-file
+
+      KC_HOSTNAME: localhost
+      KC_HTTP_PORT: 8080
+      KC_HTTPS_PORT: 8443
+      KC_PROXY: edge
+
+      KC_HEALTH_ENABLED: true
+      KC_METRICS_ENABLED: true
+      KC_FEATURES: token-exchange,admin-fine-grained-authz
+
+    ports:
+      - "9090:8080"
+      - "8443:8443"
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+    command:
+      - start-dev # Inicia Keycloak en modo desarrollo. Para producción, usa 'start'.
+#ENTRAMOS A KEYCLOAK 9090, creamos el realm "AppBank", en realm setting/key copiamos la RSA desencripada n0iXFWQVcTzHN9TQ4Nnnmb9UdpozLUZI4wuqAvvLlOQ , con esta llave se firmaran los tokens
+# Buscamos en setting realm OpenID Endpoint Configuration para saber los endpoints
+# vamos a realm setting/key copiamos luego tokens y configuramos los tokens, podemos cambiar Access Token Lifespan que es el tiempo de vida del token
+# vamos a realm roles / un role es una coleccion de permisos, creamos "bank_api"
+# vamos a usuarios  creamos el usuario diesgut, vamos a credentials y asignamos contraseña diesgut, ponemos temporal en off, le asignamos el rol creado
+# vamos a cliente creamos uno de nombre "front-angular" y en protocolo dejamos con open id connect. Valid redirect URIs  lo dejamos con *
+# en client dependera de Client authentication  si enviamos o no el client_secret
+  zipkin:
+    image: openzipkin/zipkin:3.5.1
+    container_name: zipkin
+    ports:
+      # Expone el puerto de la UI y API de Zipkin en el host
+      - "9411:9411" # http://localhost:9411/zipkin/
+volumes:
+  keycloak_data:

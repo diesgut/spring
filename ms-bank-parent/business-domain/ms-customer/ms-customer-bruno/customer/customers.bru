@@ -1,0 +1,11 @@
+meta {
+  name: customers
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:{{MS-CUSTOMER-PORT}}/customer-service/api/v1/customers
+  body: none
+  auth: inherit
+}
