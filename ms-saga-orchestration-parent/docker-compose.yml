@@ -1,0 +1,89 @@
+# Versión del formato de archivo Docker Compose.
+version: "3.8"
+
+# Define los servicios (contenedores) que compondrán tu aplicación.
+services:
+  # --- BROKER 1 ---
+  kafka-1:
+    image: bitnamilegacy/kafka:3.7.0
+    restart: "no"
+    ports:
+      # Puerto externo único para este bróker.
+      - "9092:9092"
+    volumes:
+      # Directorio de datos único para este bróker.
+      - ./docker-data/kafka-data-1:/bitnami/kafka
+    environment:
+      # --- Configuración del Clúster KRaft ---
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_KRAFT_CLUSTER_ID=WnLkTHhkQaiJbwP8FClPhw # Debe ser el MISMO para todos los brokers.
+      # KAFKA_CFG_NODE_ID: Debe ser ÚNICO para cada bróker.
+      - KAFKA_CFG_NODE_ID=1
+      # KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: DEBE LISTAR TODOS los nodos controladores.
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka-1:9091,2@kafka-2:9091,3@kafka-3:9091
+
+      # --- Configuración de Red (Listeners) ---
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9090,CONTROLLER://:9091,EXTERNAL://:9092
+      # KAFKA_CFG_ADVERTISED_LISTENERS: El listener EXTERNAL debe apuntar al puerto PÚBLICO de este bróker.
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka-1:9090,EXTERNAL://${HOSTNAME:-localhost}:9092
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+
+  # --- BROKER 2 ---
+  kafka-2:
+    image: bitnamilegacy/kafka:3.7.0
+    restart: "no"
+    ports:
+      - "9093:9092" # Puerto externo único
+    volumes:
+      - ./docker-data/kafka-data-2:/bitnami/kafka # Directorio de datos único
+    environment:
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_KRAFT_CLUSTER_ID=WnLkTHhkQaiJbwP8FClPhw # MISMO CLUSTER ID
+      - KAFKA_CFG_NODE_ID=2 # ID de nodo ÚNICO
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka-1:9091,2@kafka-2:9091,3@kafka-3:9091 # Lista COMPLETA
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9090,CONTROLLER://:9091,EXTERNAL://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka-2:9090,EXTERNAL://${HOSTNAME:-localhost}:9093 # Puerto PÚBLICO de este bróker
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+
+  # --- BROKER 3 ---
+  kafka-3:
+    image: bitnamilegacy/kafka:3.7.0
+    restart: "no"
+    ports:
+      - "9094:9092" # Puerto externo único
+    volumes:
+      - ./docker-data/kafka-data-3:/bitnami/kafka # Directorio de datos único
+    environment:
+      - KAFKA_CFG_PROCESS_ROLES=controller,broker
+      - KAFKA_KRAFT_CLUSTER_ID=WnLkTHhkQaiJbwP8FClPhw # MISMO CLUSTER ID
+      - KAFKA_CFG_NODE_ID=3 # ID de nodo ÚNICO
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@kafka-1:9091,2@kafka-2:9091,3@kafka-3:9091 # Lista COMPLETA
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9090,CONTROLLER://:9091,EXTERNAL://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://kafka-3:9090,EXTERNAL://${HOSTNAME:-localhost}:9094 # Puerto PÚBLICO de este bróker
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,EXTERNAL:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
+
+  # --- Interfaz Gráfica para Kafka ---
+  akhq:
+    image: tchiotludo/akhq:0.24.0
+    restart: "no"
+    ports:
+      - "8000:8080"
+    environment:
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            docker-kafka-cluster:
+              properties:
+                bootstrap.servers: "kafka-1:9090,kafka-2:9090,kafka-3:9090"
+    depends_on:
+      - kafka-1
+      - kafka-2
+      - kafka-3
+
+# docker-compose logs akhq
