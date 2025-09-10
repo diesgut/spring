@@ -1,0 +1,16 @@
+services:
+  mongodb_service:
+    image: mongo:8.0.13
+    container_name: mongodb_demo
+    restart: "no"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: myuser
+      MONGO_INITDB_ROOT_PASSWORD: mypassword
+      MONGO_INITDB_DATABASE: demodatabase
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:

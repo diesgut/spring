@@ -1,0 +1,16 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /mongodb
+spring:
+  application:
+    name: mongodb
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: demodatabase
+      username: myuser
+      password: mypassword
+      authentication-database: admin
+      uri: mongodb://myuser:mypassword@localhost:27017/mydatabase?authSource=admin
