@@ -1,0 +1,25 @@
+meta {
+  name: create invoice
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/mongodb/invoices
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "customerDocument": {
+      "id": "68c2495b89f336d8769251ac"
+    },
+    "productDocuments": [
+      {
+        "id": "id_e5f7d37ded5b",
+        "name": "name_c2323149fa2a"
+      }
+    ]
+  }
+}

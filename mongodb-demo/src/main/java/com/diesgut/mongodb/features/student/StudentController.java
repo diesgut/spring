@@ -9,22 +9,22 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/students")
 public class StudentController {
     private final StudentService studentService;
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/create")
+    @PostMapping
     public StudentDocument createStudent(@RequestBody StudentDocument student) {
         return studentService.createStudent(student);
     }
 
-    @GetMapping("/getById/{id}")
+    @GetMapping("/{id}")
     public StudentDocument getStudentById(@PathVariable String id) {
         return studentService.getStudentById(id);
     }
 
-    @GetMapping("/all")
+    @GetMapping
     public List<StudentDocument> getAllStudents() {
         return studentService.getAllStudents();
     }

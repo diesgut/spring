@@ -12,7 +12,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Setter
 @NoArgsConstructor // Opcional, pero útil para frameworks como Jackson
 @AllArgsConstructor // Lombok crea el constructor con todos los argumentos
-@Document(collection = "student")
+@Document(collection = "students")
 public class StudentDocument {
 	@Id
 	private String id;
