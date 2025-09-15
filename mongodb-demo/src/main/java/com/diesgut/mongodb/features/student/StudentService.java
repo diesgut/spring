@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class StudentService {
-    private final StudentRepository studentRepository;
+    private final StudentDocumentRepository studentRepository;
 
     public List<StudentDocument> getAllStudents() {
         return studentRepository.findAll();

@@ -2,6 +2,7 @@ package com.diesgut.mongodb.features.invoice.controller;
 
 import com.diesgut.mongodb.features.invoice.InvoiceService;
 import com.diesgut.mongodb.features.invoice.entities.InvoiceDocument;
+import com.diesgut.mongodb.features.invoice.entities.projections.InvoiceBasic;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -23,5 +24,10 @@ public class InvoiceController {
     @GetMapping
     public List<InvoiceDocument> all(){
         return invoiceService.allInvoices();
+    }
+
+    @GetMapping("/projections")
+    public List<InvoiceBasic> allForProjections(){
+        return invoiceService.allInvoicesForProjections();
     }
 }

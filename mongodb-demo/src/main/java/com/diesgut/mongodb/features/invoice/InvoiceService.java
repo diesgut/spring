@@ -1,11 +1,12 @@
 package com.diesgut.mongodb.features.invoice;
 
+import com.diesgut.mongodb.features.invoice.dao.IInvoiceDao;
 import com.diesgut.mongodb.features.invoice.entities.CustomerDocument;
 import com.diesgut.mongodb.features.invoice.entities.InvoiceDocument;
 import com.diesgut.mongodb.features.invoice.entities.ProductDocument;
-import com.diesgut.mongodb.features.invoice.repositories.CustomerRepository;
-import com.diesgut.mongodb.features.invoice.repositories.InvoiceRepository;
-import com.diesgut.mongodb.features.invoice.repositories.ProductRepository;
+import com.diesgut.mongodb.features.invoice.entities.projections.InvoiceBasic;
+import com.diesgut.mongodb.features.invoice.repositories.CustomerDocumentRepository;
+import com.diesgut.mongodb.features.invoice.repositories.ProductDocumentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +15,9 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 public class InvoiceService {
-    private final CustomerRepository customerRepository;
-    private final InvoiceRepository invoiceRepository;
-    private final ProductRepository productRepository;
+    private final CustomerDocumentRepository customerRepository;
+    private final IInvoiceDao iInvoiceDao;
+    private final ProductDocumentRepository productRepository;
 
     public InvoiceDocument createInvoice(InvoiceDocument invoiceDocument) {
         if(invoiceDocument.getCustomerDocument() != null){
@@ -30,11 +31,15 @@ public class InvoiceService {
             List<ProductDocument> fetchedProducts = productRepository.findAllById(productIds);
             invoiceDocument.setProductDocuments(fetchedProducts);
         }
-        return invoiceRepository.save(invoiceDocument);
+        return iInvoiceDao.save(invoiceDocument);
     }
 
     public List<InvoiceDocument> allInvoices() {
-        return invoiceRepository.findAll();
+        return iInvoiceDao.allWithoutProducts();
+    }
+
+    public List<InvoiceBasic> allInvoicesForProjections() {
+        return iInvoiceDao.allForProjections();
     }
 
     public CustomerDocument createCustomer(CustomerDocument customerDocument) {

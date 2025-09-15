@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.DocumentReference;
 
 import java.util.List;
 
@@ -19,9 +20,11 @@ public class InvoiceDocument {
     @Id
     private String id;
 
-    @DBRef
+  //  @DBRef save like "customer": { "$ref": "customers", "$id": ObjectId("customer456") } in mongodb
+    @DocumentReference // save like "customer": "customer456" in mongodb
     private CustomerDocument customerDocument;
 
-    @DBRef(lazy = true) //don't work
+  //  @DBRef(lazy = true) //don't work
+    @DocumentReference(lazy = true)
     private List<ProductDocument> productDocuments;
 }
